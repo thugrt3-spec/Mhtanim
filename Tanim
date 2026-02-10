@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Just For You 💗</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  background: radial-gradient(circle at top, #2b001f, #0a0006);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffe6ef;
+}
+
+/* Floating hearts */
+.heart {
+  position: absolute;
+  bottom: -20px;
+  font-size: 18px;
+  animation: floatUp linear infinite;
+  opacity: 0.6;
+}
+
+@keyframes floatUp {
+  from { transform: translateY(0) scale(1); opacity: 0.7; }
+  to { transform: translateY(-110vh) scale(1.5); opacity: 0; }
+}
+
+/* Card */
+.card {
+  background: linear-gradient(145deg, rgba(255,215,230,0.15), rgba(0,0,0,0.6));
+  backdrop-filter: blur(14px);
+  border-radius: 22px;
+  padding: 28px;
+  max-width: 380px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 0 45px rgba(255,120,180,0.35);
+  animation: fadeSlide 1.2s ease;
+}
+
+h1 {
+  font-size: 22px;
+  margin-bottom: 12px;
+  color: #ffd1e6;
+}
+
+p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #ffeaf2;
+}
+
+.buttons {
+  margin-top: 26px;
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+button {
+  padding: 12px 24px;
+  border-radius: 30px;
+  border: none;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.yes {
+  background: linear-gradient(45deg, #ff5fa2, #ff9fcf);
+  color: #fff;
+  box-shadow: 0 0 18px rgba(255,105,180,0.9);
+  animation: glow 2s infinite alternate;
+}
+
+.yes:hover { transform: scale(1.12); }
+
+.no {
+  background: #120009;
+  color: #fff;
+  position: relative;
+}
+
+audio {
+  margin-top: 18px;
+  width: 100%;
+  display: none;
+}
+
+/* Secret */
+.secret {
+  margin-top: 18px;
+  font-size: 12px;
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+.secret-msg {
+  margin-top: 8px;
+  font-size: 14px;
+  color: #ffb6d9;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.secret-msg.show {
+  opacity: 1;
+}
+
+@keyframes glow {
+  from { box-shadow: 0 0 10px rgba(255,105,180,0.6); }
+  to { box-shadow: 0 0 28px rgba(255,105,180,1); }
+}
+
+@keyframes fadeSlide {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.shake { animation: shake 0.4s; }
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  50% { transform: translateX(6px); }
+  75% { transform: translateX(-6px); }
+  100% { transform: translateX(0); }
+}
+
+/* Pink particles */
+.particle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: pink;
+  border-radius: 50%;
+  animation: particleUp 2s linear forwards;
+}
+
+@keyframes particleUp {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(-120px); opacity: 0; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="card" id="card">
+  <h1>Hey… I’m glad you’re here 💗</h1>
+  <p>
+    This little corner of the internet holds a song that feels like a heartbeat.  
+    I chose it gently… thinking of you.  
+    <br><br>
+    If you’re curious enough to feel it — tap <b>Yes</b>.
+  </p>
+
+  <div class="buttons">
+    <button class="yes" onclick="playSong()">Yes 💗</button>
+    <button class="no" id="noBtn">No</button>
+  </div>
+
+  <audio id="song" controls>
+    <source src="song.mp3" type="audio/mpeg">
+  </audio>
+
+  <div class="secret" onclick="unlockSecret()">🔒 secret</div>
+  <div class="secret-msg" id="secretMsg">Miss you 💗</div>
+</div>
+
+<script>
+// Floating hearts
+setInterval(() => {
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.innerHTML = "💗";
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.animationDuration = (5 + Math.random() * 5) + "s";
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 10000);
+}, 400);
+
+// Play song + particles
+function playSong() {
+  const audio = document.getElementById("song");
+  audio.style.display = "block";
+  audio.play();
+
+  setInterval(() => {
+    const p = document.createElement("div");
+    p.className = "particle";
+    p.style.left = (50 + Math.random()*100 - 50) + "%";
+    p.style.bottom = "80px";
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 2000);
+  }, 180);
+}
+
+// Secret unlock
+function unlockSecret() {
+  document.getElementById("secretMsg").classList.add("show");
+}
+
+// No button dodge
+const noBtn = document.getElementById("noBtn");
+noBtn.addEventListener("mouseenter", () => {
+  noBtn.style.transform =
+    `translate(${Math.random()*120 - 60}px, ${Math.random()*80 - 40}px)`;
+});
+
+// Final No click
+noBtn.addEventListener("click", () => {
+  const card = document.getElementById("card");
+  card.classList.add("shake");
+  setTimeout(() => {
+    card.innerHTML = "<h1>Fuck off 😈</h1>";
+  }, 300);
+});
+</script>
+
+</body>
+</html>
